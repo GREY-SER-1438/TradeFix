@@ -1,0 +1,72 @@
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+.table-header h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+
+.table-wrap { overflow-x: auto; }
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.col-id      { width: 50px; }
+.col-name    { width: 180px; }
+.col-img     { width: 60px; }
+.col-price   { width: 120px; }
+.col-cat     { width: 130px; }
+.col-contact { width: 170px; }
+.col-status  { width: 140px; }
+.col-date    { width: 110px; }
+.col-actions { width: 90px; }
+
+.admin-table thead tr { border-bottom: 1px solid var(--border); }
+
+.admin-table th {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.admin-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-table tbody tr:last-child td { border-bottom: none; }
+.admin-table tbody tr:hover { background: var(--bg); }
+
+.admin-table select {
+  margin: 0;
+  padding: 0.3rem 0.5rem;
+  width: auto;
+  font-size: 0.875rem;
+}
+
+.admin-table img { border-radius: 4px; display: block; }
+
+.admin-table td:has(.actions) { overflow: visible; white-space: normal; }
+.admin-table td:nth-child(3) { white-space: normal; }
+
+.actions { display: flex; gap: 0.4rem; align-items: center; }
+
+.icon-btn {
+  padding: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}

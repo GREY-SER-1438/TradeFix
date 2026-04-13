@@ -1,0 +1,30 @@
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-header h2 { margin: 0; font-size: 1.2rem; font-weight: 700; }
+
+.admin-header nav { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; }
+
+.tab {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--text); background: var(--bg); border-color: var(--border); }
+.tab.active { background: var(--primary-light); color: var(--primary); border-color: #bfdbfe; }
+
+.admin-content { min-height: 400px; padding: 1.5rem; }

@@ -1,0 +1,33 @@
+.auth-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 380px;
+  padding: 2rem;
+}
+
+.auth-form h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.auth-form .auth-sub {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1.75rem;
+}
+
+.auth-form label {
+  display: block;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+.auth-form input { margin-bottom: 1rem; }
+
+.auth-form .btn { width: 100%; text-align: center; padding: 0.65rem; margin-top: 0.25rem; }
