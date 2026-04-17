@@ -1,28 +1,15 @@
 import { API_V1 } from '../../constants'
 
-async function request(method, path, options = {}) {
-  const { params, body, headers: extraHeaders = {} } = options
-
-  let url = `${API_V1}${path}`
-  if (params) {
-    const qs = new URLSearchParams(
-      Object.entries(params).filter(([, v]) => v != null)
-    )
-    const str = qs.toString()
-    if (str) url += `?${str}`
-  }
-
+async function request(method, path, body) {
   const token = localStorage.getItem('token')
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...extraHeaders,
-  }
 
-  const res = await fetch(url, {
+  const res = await fetch(`${API_V1}${path}`, {
     method,
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     ...(body != null ? { body: JSON.stringify(body) } : {}),
   })
 
@@ -31,17 +18,12 @@ async function request(method, path, options = {}) {
     throw new Error(text || `HTTP ${res.status}`)
   }
 
-  const contentType = res.headers.get('content-type') ?? ''
-  if (contentType.includes('application/json')) {
-    return res.json()
-  }
-  return res.text()
+  return res.json()
 }
 
 export const api = {
-  get: (path, options) => request('GET', path, options),
-  post: (path, body, options) => request('POST', path, { ...options, body }),
-  put: (path, body, options) => request('PUT', path, { ...options, body }),
-  patch: (path, body, options) => request('PATCH', path, { ...options, body }),
-  delete: (path, options) => request('DELETE', path, options),
+  get:    (path)        => request('GET',    path),
+  post:   (path, body)  => request('POST',   path, body),
+  put:    (path, body)  => request('PUT',    path, body),
+  delete: (path)        => request('DELETE', path),
 }

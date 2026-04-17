@@ -1,28 +1,8 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { api } from '../../shared/api/instance'
+import { useLogin } from './hooks/use-login'
 import './login-page.css'
 
 export default function LoginPage() {
-  const [form, setForm] = useState({ login: '', pass: '' })
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
-
-  const login = async (e) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
-    try {
-      const data = await api.post('/auth/login', { login: form.login, password: form.pass })
-      localStorage.setItem('token', data.accessToken)
-      navigate('/admin/products')
-    } catch (err) {
-      setError('Неверный логин или пароль')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { form, setForm, error, loading, login } = useLogin()
 
   return (
     <div className="auth-wrap">

@@ -1,54 +1,10 @@
-import { useEffect, useState } from 'react'
 import { Pencil, Trash2, X } from 'lucide-react'
-import { api } from '../../shared/api/instance'
-import { API_BASE_URL } from '../../constants'
+import { useProducts } from './hooks/use-products'
+import { useProductModal } from './hooks/use-product-modal'
 import './tables.css'
 
-const EMPTY = { name: '', description: '', price: '', category: '' }
-
 function ProductModal({ initial, onClose, onSaved }) {
-  const [form, setForm] = useState(initial ?? EMPTY)
-  const [file, setFile] = useState(null)
-  const [saving, setSaving] = useState(false)
-
-  const isEdit = Boolean(initial)
-
-  const save = async (e) => {
-    e.preventDefault()
-    setSaving(true)
-    try {
-      let product
-      if (isEdit) {
-        product = await api.put(`/products/${initial.id}`, {
-          name: form.name,
-          description: form.description,
-          price: Number(form.price),
-          category: form.category,
-        })
-        if (file) {
-          const fd = new FormData()
-          fd.append('image', file)
-          const token = localStorage.getItem('token')
-          const res = await fetch(`${API_BASE_URL}/api/products/${initial.id}/image`, {
-            method: 'PUT',
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-            body: fd,
-          })
-          product = await res.json()
-        }
-      } else {
-        product = await api.post('/products', {
-          name: form.name,
-          description: form.description,
-          price: Number(form.price),
-          category: form.category,
-        })
-      }
-      onSaved(product, isEdit)
-    } finally {
-      setSaving(false)
-    }
-  }
+  const { form, setForm, setFile, saving, isEdit, save } = useProductModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -86,24 +42,7 @@ function ProductModal({ initial, onClose, onSaved }) {
 }
 
 export default function ProductsTable() {
-  const [products, setProducts] = useState([])
-  const [modal, setModal] = useState(null)
-
-  useEffect(() => {
-    api.get('/products').then(setProducts).catch(() => {})
-  }, [])
-
-  const onSaved = (product, isEdit) => {
-    setProducts(prev =>
-      isEdit ? prev.map(p => p.id === product.id ? product : p) : [...prev, product]
-    )
-    setModal(null)
-  }
-
-  const remove = async (id) => {
-    await api.delete(`/products/${id}`)
-    setProducts(prev => prev.filter(p => p.id !== id))
-  }
+  const { products, modal, setModal, onSaved, remove } = useProducts()
 
   return (
     <div>

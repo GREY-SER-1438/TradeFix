@@ -1,22 +1,12 @@
-import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { api } from '../../shared/api/instance'
+import { useProduct } from './hooks/use-product'
 import './product-detail-page.css'
 
 export default function ProductDetailPage() {
   const { id } = useParams()
-  const navigate = useNavigate()
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const { product, loading } = useProduct(id)
 
-  useEffect(() => {
-    api.get(`/products/${id}`)
-      .then(setProduct)
-      .catch(() => setProduct(null))
-      .finally(() => setLoading(false))
-  }, [id])
-
-if (loading) return <div className="detail"><p>Загрузка...</p></div>
+  if (loading) return <div className="detail"><p>Загрузка...</p></div>
   if (!product) return <div className="detail"><p>Товар не найден. <Link to="/catalog">← Назад</Link></p></div>
 
   return (
