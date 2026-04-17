@@ -60,11 +60,15 @@ export default function CatalogPage() {
         <div className="products-grid">
           {filtered.map(p => (
             <div key={p.id} className="product-card">
-              <img className="product-card__img" src={p.img} alt={p.name} />
+              <img
+                className="product-card__img"
+                src={p.image ? `http://localhost:3001${p.image}` : 'https://placehold.co/300x200/e2e8f0/64748b?text=Product'}
+                alt={p.name}
+              />
               <div className="product-card__body">
-                <div className="product-card__cat">{p.cat}</div>
+                <div className="product-card__cat">{p.category}</div>
                 <h3>{p.name}</h3>
-                <p className="price">{p.price.toLocaleString()} ₽</p>
+                <p className="price">{Number(p.price).toLocaleString()} ₽</p>
                 <Link to={`/catalog/${p.id}`} className="btn btn-outline">Подробнее</Link>
               </div>
             </div>

@@ -18,7 +18,6 @@ export default function RequestsTable() {
             <col className="col-contact" />
             <col />
             <col className="col-status" />
-            <col className="col-date" />
             <col className="col-actions" />
           </colgroup>
           <thead>
@@ -26,9 +25,8 @@ export default function RequestsTable() {
               <th>ID</th>
               <th>Клиент</th>
               <th>Контакт</th>
-              <th>Услуга</th>
+              <th>Описание</th>
               <th>Статус</th>
-              <th>Дата</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -36,9 +34,9 @@ export default function RequestsTable() {
             {requests.map(r => (
               <tr key={r.id}>
                 <td>{r.id}</td>
-                <td>{r.name}</td>
-                <td>{r.contact}</td>
-                <td>{r.service}</td>
+                <td>{r.clientName}</td>
+                <td>{r.clientContact}</td>
+                <td>{r.description}</td>
                 <td>
                   <select value={r.status} onChange={e => changeStatus(r.id, e.target.value)}>
                     <option value="new">Новая</option>
@@ -46,7 +44,6 @@ export default function RequestsTable() {
                     <option value="completed">Готова</option>
                   </select>
                 </td>
-                <td>{r.date}</td>
                 <td>
                   <div className="actions">
                     <button className="btn btn-danger icon-btn" onClick={() => deleteRequest(r.id)}>

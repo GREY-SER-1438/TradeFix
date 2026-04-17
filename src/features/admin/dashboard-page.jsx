@@ -11,7 +11,7 @@ export default function DashboardPage() {
   const navigate = useNavigate()
 
   const logout = () => {
-    localStorage.removeItem('accessToken')
+    localStorage.removeItem('token')
     navigate('/')
   }
 

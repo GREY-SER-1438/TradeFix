@@ -1,12 +1,5 @@
-import { useState } from 'react'
-
-const PRODUCTS = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  name: `Торговое оборудование #${i + 1}`,
-  price: 8000 + i * 2500,
-  cat: i % 3 === 0 ? 'Холодильное' : i % 3 === 1 ? 'Мебель' : 'Кассовое',
-  img: 'https://placehold.co/300x200/e2e8f0/64748b?text=Product',
-}))
+import { useState, useEffect } from 'react'
+import { api } from '../../../shared/api/instance'
 
 function toPositive(value) {
   const num = parseFloat(value)
@@ -15,7 +8,12 @@ function toPositive(value) {
 }
 
 export function useCatalogFilters() {
+  const [products, setProducts] = useState([])
   const [filters, setFilters] = useState({ cat: '', min: '', max: '' })
+
+  useEffect(() => {
+    api.get('/products').then(setProducts).catch(() => {})
+  }, [])
 
   const updateFilters = (patch) => {
     const next = { ...filters, ...patch }
@@ -24,8 +22,8 @@ export function useCatalogFilters() {
     setFilters(next)
   }
 
-  const filtered = PRODUCTS.filter(p => {
-    if (filters.cat && p.cat !== filters.cat) return false
+  const filtered = products.filter(p => {
+    if (filters.cat && p.category !== filters.cat) return false
     if (filters.min && p.price < +filters.min) return false
     if (filters.max && p.price > +filters.max) return false
     return true

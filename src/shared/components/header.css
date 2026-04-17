@@ -41,11 +41,3 @@
   transition: color 0.15s;
 }
 .header__inner nav a:hover { color: #fff; }
-
-.admin-btn {
-  background: var(--primary) !important;
-  color: #fff !important;
-  border-radius: var(--radius-sm) !important;
-  font-size: 0.875rem !important;
-}
-.admin-btn:hover { background: var(--primary-dark) !important; color: #fff !important; }

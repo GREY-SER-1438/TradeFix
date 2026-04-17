@@ -10,7 +10,6 @@ export default function Header() {
           <Link to="/">Главная</Link>
           <Link to="/services">Услуги</Link>
           <Link to="/catalog">Каталог</Link>
-          <Link to="/admin/login" className="admin-btn">Войти</Link>
         </nav>
       </div>
     </header>

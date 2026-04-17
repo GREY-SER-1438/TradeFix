@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-
-export const SERVICES_LIST = [
-  { id: 1, name: 'Ремонт холодильных витрин', cat: 'Ремонт', price: 4500, desc: 'Замена ТЭНов, фреона, термостатов.' },
-  { id: 2, name: 'ТО весового оборудования', cat: 'ТО', price: 2000, desc: 'Поверка, калибровка, чистка датчиков.' },
-  { id: 3, name: 'Продажа кассовых боксов', cat: 'Покупка', price: 32000, desc: 'Новые и восстановленные модели.' },
-]
+import { api } from '../../../shared/api/instance'
 
 const emptyForm = { name: '', contact: '', serviceId: '', desc: '' }
+
+export function useServices() {
+  const [services, setServices] = useState([])
+
+  useEffect(() => {
+    api.get('/services').then(setServices).catch(() => {})
+  }, [])
+
+  return services
+}
 
 export function useRequestForm() {
   const location = useLocation()
@@ -20,11 +25,21 @@ export function useRequestForm() {
     }
   }, [location.state])
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
-    setSuccess(true)
-    setTimeout(() => setSuccess(false), 3000)
-    setForm(emptyForm)
+    try {
+      await api.post('/requests', {
+        clientName: form.name,
+        clientContact: form.contact,
+        serviceId: Number(form.serviceId),
+        description: form.desc,
+      })
+      setSuccess(true)
+      setTimeout(() => setSuccess(false), 3000)
+      setForm(emptyForm)
+    } catch {
+      // silent — could add error state here
+    }
   }
 
   return { form, setForm, success, submit }

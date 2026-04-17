@@ -1,25 +1,23 @@
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { api } from '../../shared/api/instance'
 import './product-detail-page.css'
-
-function getProductById(id) {
-  return {
-    id: +id,
-    name: `Торговое оборудование #${id}`,
-    price: 25000,
-    cat: 'Холодильное',
-    desc: 'Профессиональная витрина с динамическим охлаждением. Энергокласс A+. Размеры: 1200×800×1300 мм. Гарантия 24 мес. Доставка по РФ.',
-    img: 'https://placehold.co/600x400/e2e8f0/64748b?text=Detail',
-  }
-}
 
 export default function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const product = getProductById(id)
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const requestService = () => {
-    navigate('/services', { state: { prefillDesc: `Интересует товар: ${product.name} (${product.cat})` } })
-  }
+  useEffect(() => {
+    api.get(`/products/${id}`)
+      .then(setProduct)
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false))
+  }, [id])
+
+if (loading) return <div className="detail"><p>Загрузка...</p></div>
+  if (!product) return <div className="detail"><p>Товар не найден. <Link to="/catalog">← Назад</Link></p></div>
 
   return (
     <div className="detail">
@@ -27,15 +25,17 @@ export default function ProductDetailPage() {
         <Link to="/catalog">← Каталог</Link>
       </p>
       <div className="card detail-wrap">
-        <img src={product.img} alt={product.name} />
+        <img
+          src={product.image ? `http://localhost:3001${product.image}` : 'https://placehold.co/600x400/e2e8f0/64748b?text=Detail'}
+          alt={product.name}
+        />
         <div className="detail-info">
-          <span className="badge">{product.cat}</span>
+          <span className="badge">{product.category}</span>
           <h1>{product.name}</h1>
-          <span className="price">{product.price.toLocaleString()} ₽</span>
+          <span className="price">{Number(product.price).toLocaleString()} ₽</span>
           <hr className="detail-divider" />
-          <p className="desc">{product.desc}</p>
+          <p className="desc">{product.description}</p>
           <div className="detail-actions">
-            <button onClick={requestService} className="btn btn-primary">Оставить заявку</button>
             <Link to="/catalog" className="btn btn-outline">Назад</Link>
           </div>
         </div>
