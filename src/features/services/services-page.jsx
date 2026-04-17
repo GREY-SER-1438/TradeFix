@@ -2,7 +2,7 @@ import { useRequestForm, useServices } from './hooks/use-request-form.js'
 import './services-page.css'
 
 export default function ServicesPage() {
-  const { form, setForm, success, submit } = useRequestForm()
+  const { form, setForm, errors, success, submit } = useRequestForm()
   const services = useServices()
 
   return (
@@ -24,37 +24,45 @@ export default function ServicesPage() {
         </div>
         <div className="form-box card">
           <h2>Заявка</h2>
-          {success && <div className="msg success">✅ Заявка успешно отправлена!</div>}
+          {success && <div className="msg success">Заявка успешно отправлена!</div>}
           <form onSubmit={submit}>
             <input
               placeholder="Имя"
+              className={errors.name ? 'input-error' : ''}
               value={form.name}
               onChange={e => setForm({ ...form, name: e.target.value })}
-              required
             />
+            {errors.name && <span className="field-error">{errors.name}</span>}
+
             <input
               placeholder="Телефон / Email"
+              className={errors.contact ? 'input-error' : ''}
               value={form.contact}
               onChange={e => setForm({ ...form, contact: e.target.value })}
-              required
             />
+            {errors.contact && <span className="field-error">{errors.contact}</span>}
+
             <select
+              className={errors.serviceId ? 'input-error' : ''}
               value={form.serviceId}
               onChange={e => setForm({ ...form, serviceId: e.target.value })}
-              required
             >
               <option value="">Выберите услугу</option>
               {services.map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
+            {errors.serviceId && <span className="field-error">{errors.serviceId}</span>}
+
             <textarea
               placeholder="Описание проблемы"
               rows="4"
+              className={errors.desc ? 'input-error' : ''}
               value={form.desc}
               onChange={e => setForm({ ...form, desc: e.target.value })}
-              required
             />
+            {errors.desc && <span className="field-error">{errors.desc}</span>}
+
             <button type="submit" className="btn btn-primary">Отправить заявку</button>
           </form>
         </div>
