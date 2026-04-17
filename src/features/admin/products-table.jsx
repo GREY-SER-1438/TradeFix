@@ -4,7 +4,7 @@ import { useProductModal } from './hooks/use-product-modal'
 import './tables.css'
 
 function ProductModal({ initial, onClose, onSaved }) {
-  const { form, setForm, setFile, saving, isEdit, save } = useProductModal(initial, onSaved)
+  const { form, setForm, setFile, saving, errors, isEdit, save } = useProductModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -15,13 +15,21 @@ function ProductModal({ initial, onClose, onSaved }) {
         </div>
         <form onSubmit={save}>
           <label>Название</label>
-          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+          <input className={errors.name ? 'input-error' : ''} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+          {errors.name && <span className="field-error">{errors.name}</span>}
+
           <label>Описание</label>
-          <textarea rows={3} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} required />
+          <textarea rows={3} className={errors.description ? 'input-error' : ''} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
+          {errors.description && <span className="field-error">{errors.description}</span>}
+
           <label>Цена, ₽</label>
-          <input type="number" min="0" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} required />
+          <input type="number" min="0" className={errors.price ? 'input-error' : ''} value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
+          {errors.price && <span className="field-error">{errors.price}</span>}
+
           <label>Категория</label>
-          <input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} required />
+          <input className={errors.category ? 'input-error' : ''} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+          {errors.category && <span className="field-error">{errors.category}</span>}
+
           {isEdit && (
             <>
               <label>Фото</label>

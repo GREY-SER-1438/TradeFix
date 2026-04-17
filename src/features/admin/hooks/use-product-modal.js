@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '../../../shared/api/instance'
 import { API_BASE_URL } from '../../../constants'
+import { productSchema } from '../../../shared/lib/schemas'
 
 const EMPTY = { name: '', description: '', price: '', category: '' }
 
@@ -8,11 +9,22 @@ export function useProductModal(initial, onSaved) {
   const [form, setForm] = useState(initial ?? EMPTY)
   const [file, setFile] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [errors, setErrors] = useState({})
 
   const isEdit = Boolean(initial)
 
   const save = async (e) => {
     e.preventDefault()
+    const result = productSchema.safeParse(form)
+    if (!result.success) {
+      const fieldErrors = {}
+      for (const issue of result.error.issues) {
+        fieldErrors[issue.path[0]] = issue.message
+      }
+      setErrors(fieldErrors)
+      return
+    }
+    setErrors({})
     setSaving(true)
     try {
       let product
@@ -48,5 +60,5 @@ export function useProductModal(initial, onSaved) {
     }
   }
 
-  return { form, setForm, file, setFile, saving, isEdit, save }
+  return { form, setForm, file, setFile, saving, errors, isEdit, save }
 }

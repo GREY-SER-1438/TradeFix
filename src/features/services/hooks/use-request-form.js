@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { api } from '../../../shared/api/instance'
+import { requestSchema } from '../../../shared/lib/schemas'
 
 const emptyForm = { name: '', contact: '', serviceId: '', desc: '' }
 
@@ -17,6 +18,7 @@ export function useServices() {
 export function useRequestForm() {
   const location = useLocation()
   const [form, setForm] = useState(emptyForm)
+  const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
@@ -27,6 +29,16 @@ export function useRequestForm() {
 
   const submit = async (e) => {
     e.preventDefault()
+    const result = requestSchema.safeParse(form)
+    if (!result.success) {
+      const fieldErrors = {}
+      for (const issue of result.error.issues) {
+        fieldErrors[issue.path[0]] = issue.message
+      }
+      setErrors(fieldErrors)
+      return
+    }
+    setErrors({})
     try {
       await api.post('/requests', {
         clientName: form.name,
@@ -38,9 +50,9 @@ export function useRequestForm() {
       setTimeout(() => setSuccess(false), 3000)
       setForm(emptyForm)
     } catch {
-      // silent — could add error state here
+      // silent
     }
   }
 
-  return { form, setForm, success, submit }
+  return { form, setForm, errors, success, submit }
 }

@@ -102,3 +102,17 @@ input:focus, select:focus, textarea:focus {
   margin-bottom: 1.75rem;
   font-size: 0.95rem;
 }
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.78rem;
+  margin-top: -0.6rem;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.input-error {
+  border-color: var(--danger) !important;
+}
+
+.msg.error { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
