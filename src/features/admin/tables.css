@@ -116,6 +116,28 @@
   margin-top: 0.5rem;
 }
 
+.type-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.type-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.type-tab:hover { color: var(--text); }
+.type-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
 .modal-box label {
   display: block;
   font-size: 0.85rem;

@@ -3,10 +3,10 @@ import { useCatalogFilters } from './hooks/use-catalog-filters.js'
 import './catalog-page.css'
 
 export default function CatalogPage() {
-  const { filters, setFilters, filtered } = useCatalogFilters()
+  const { filters, setFilters, products, categories } = useCatalogFilters()
 
-  const reset = () => setFilters({ cat: '', min: '', max: '' })
-  const hasFilters = filters.cat || filters.min || filters.max
+  const reset = () => setFilters({ categoryId: '', min: '', max: '' })
+  const hasFilters = filters.categoryId || filters.min || filters.max
 
   return (
     <div className="catalog-layout">
@@ -20,11 +20,9 @@ export default function CatalogPage() {
 
         <div className="filter-group">
           <label className="filter-label">Категория</label>
-          <select value={filters.cat} onChange={e => setFilters({ cat: e.target.value })}>
+          <select value={filters.categoryId} onChange={e => setFilters({ categoryId: e.target.value })}>
             <option value="">Все категории</option>
-            <option>Холодильное</option>
-            <option>Мебель</option>
-            <option>Кассовое</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
 
@@ -54,11 +52,11 @@ export default function CatalogPage() {
       <div className="catalog-main">
         <div className="catalog-header">
           <h1>Каталог</h1>
-          <span className="catalog-count">{filtered.length} товаров</span>
+          <span className="catalog-count">{products.length} товаров</span>
         </div>
 
         <div className="products-grid">
-          {filtered.map(p => (
+          {products.map(p => (
             <div key={p.id} className="product-card">
               <img
                 className="product-card__img"
@@ -66,7 +64,7 @@ export default function CatalogPage() {
                 alt={p.name}
               />
               <div className="product-card__body">
-                <div className="product-card__cat">{p.category}</div>
+                <div className="product-card__cat">{p.category?.name ?? ''}</div>
                 <h3>{p.name}</h3>
                 <p className="price">{Number(p.price).toLocaleString()} ₽</p>
                 <Link to={`/catalog/${p.id}`} className="btn btn-outline">Подробнее</Link>

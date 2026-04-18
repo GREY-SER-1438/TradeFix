@@ -22,7 +22,10 @@ async function request(method, path, body) {
 }
 
 export const api = {
-  get:    (path)        => request('GET',    path),
+  get:    (path, params) => {
+    const qs = params && Object.keys(params).length ? '?' + new URLSearchParams(params) : ''
+    return request('GET', path + qs)
+  },
   post:   (path, body)  => request('POST',   path, body),
   put:    (path, body)  => request('PUT',    path, body),
   delete: (path)        => request('DELETE', path),

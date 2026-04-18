@@ -1,15 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { api } from '../../../shared/api/instance'
 import { serviceSchema } from '../../../shared/lib/schemas'
 
-const EMPTY = { name: '', description: '', category: '', price: '' }
+const EMPTY = { name: '', description: '', categoryId: '', price: '' }
+
+function toInitial(s) {
+  if (!s) return EMPTY
+  return { name: s.name, description: s.description, categoryId: s.category?.id ?? '', price: s.price }
+}
 
 export function useServiceModal(initial, onSaved) {
-  const [form, setForm] = useState(initial ?? EMPTY)
+  const [form, setForm] = useState(() => toInitial(initial))
+  const [categories, setCategories] = useState([])
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
 
   const isEdit = Boolean(initial)
+
+  useEffect(() => {
+    api.get('/categories', { type: 'service' }).then(setCategories).catch(() => {})
+  }, [])
 
   const save = async (e) => {
     e.preventDefault()
@@ -25,7 +35,12 @@ export function useServiceModal(initial, onSaved) {
     setErrors({})
     setSaving(true)
     try {
-      const body = { name: form.name, description: form.description, category: form.category, price: Number(form.price) }
+      const body = {
+        name: form.name,
+        description: form.description,
+        categoryId: Number(form.categoryId),
+        price: Number(form.price),
+      }
       const service = isEdit
         ? await api.put(`/services/${initial.id}`, body)
         : await api.post('/services', body)
@@ -35,5 +50,5 @@ export function useServiceModal(initial, onSaved) {
     }
   }
 
-  return { form, setForm, saving, errors, isEdit, save }
+  return { form, setForm, categories, saving, errors, isEdit, save }
 }

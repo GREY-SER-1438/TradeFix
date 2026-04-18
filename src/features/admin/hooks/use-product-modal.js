@@ -1,17 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { api } from '../../../shared/api/instance'
-import { API_BASE_URL } from '../../../constants'
+import { API_V1 } from '../../../constants'
 import { productSchema } from '../../../shared/lib/schemas'
 
-const EMPTY = { name: '', description: '', price: '', category: '' }
+const EMPTY = { name: '', description: '', price: '', categoryId: '' }
+
+function toInitial(p) {
+  if (!p) return EMPTY
+  return { name: p.name, description: p.description, price: p.price, categoryId: p.category?.id ?? '' }
+}
 
 export function useProductModal(initial, onSaved) {
-  const [form, setForm] = useState(initial ?? EMPTY)
+  const [form, setForm] = useState(() => toInitial(initial))
+  const [categories, setCategories] = useState([])
   const [file, setFile] = useState(null)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
 
   const isEdit = Boolean(initial)
+
+  useEffect(() => {
+    api.get('/categories', { type: 'product' }).then(setCategories).catch(() => {})
+  }, [])
 
   const save = async (e) => {
     e.preventDefault()
@@ -28,31 +38,32 @@ export function useProductModal(initial, onSaved) {
     setSaving(true)
     try {
       let product
-      if (isEdit) {
-        product = await api.put(`/products/${initial.id}`, {
-          name: form.name,
-          description: form.description,
-          price: Number(form.price),
-          category: form.category,
+      if (file) {
+        const fd = new FormData()
+        fd.append('name', form.name)
+        fd.append('description', form.description)
+        fd.append('price', String(Number(form.price)))
+        fd.append('categoryId', String(form.categoryId))
+        fd.append('image', file)
+        const token = localStorage.getItem('token')
+        const method = isEdit ? 'PUT' : 'POST'
+        const url = isEdit ? `${API_V1}/products/${initial.id}` : `${API_V1}/products`
+        const res = await fetch(url, {
+          method,
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          body: fd,
         })
-        if (file) {
-          const fd = new FormData()
-          fd.append('image', file)
-          const token = localStorage.getItem('token')
-          const res = await fetch(`${API_BASE_URL}/api/products/${initial.id}/image`, {
-            method: 'PUT',
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-            body: fd,
-          })
-          product = await res.json()
-        }
+        product = await res.json()
       } else {
-        product = await api.post('/products', {
+        const body = {
           name: form.name,
           description: form.description,
           price: Number(form.price),
-          category: form.category,
-        })
+          categoryId: Number(form.categoryId),
+        }
+        product = isEdit
+          ? await api.put(`/products/${initial.id}`, body)
+          : await api.post('/products', body)
       }
       onSaved(product, isEdit)
     } finally {
@@ -60,5 +71,5 @@ export function useProductModal(initial, onSaved) {
     }
   }
 
-  return { form, setForm, file, setFile, saving, errors, isEdit, save }
+  return { form, setForm, categories, file, setFile, saving, errors, isEdit, save }
 }

@@ -7,13 +7,13 @@ function toPositive(value) {
   return String(num)
 }
 
-export function useCatalogFilters() {
-  const [products, setProducts] = useState([])
+export function useServicesFilters() {
+  const [services, setServices] = useState([])
   const [categories, setCategories] = useState([])
   const [filters, setFilters] = useState({ categoryId: '', min: '', max: '' })
 
   useEffect(() => {
-    api.get('/categories', { type: 'product' }).then(setCategories).catch(() => {})
+    api.get('/categories', { type: 'service' }).then(setCategories).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -21,8 +21,8 @@ export function useCatalogFilters() {
     if (filters.categoryId) params.categoryId = filters.categoryId
     if (filters.min) params.minPrice = filters.min
     if (filters.max) params.maxPrice = filters.max
-    api.get('/products', Object.keys(params).length ? params : undefined)
-      .then(setProducts)
+    api.get('/services', Object.keys(params).length ? params : undefined)
+      .then(setServices)
       .catch(() => {})
   }, [filters])
 
@@ -33,5 +33,5 @@ export function useCatalogFilters() {
     setFilters(next)
   }
 
-  return { filters, setFilters: updateFilters, products, categories }
+  return { filters, setFilters: updateFilters, services, categories }
 }

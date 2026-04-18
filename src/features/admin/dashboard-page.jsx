@@ -2,6 +2,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import './dashboard-page.css'
 
 const tabs = [
+  { path: '/admin/categories', label: 'Категории' },
   { path: '/admin/products', label: 'Товары' },
   { path: '/admin/services', label: 'Услуги' },
   { path: '/admin/requests', label: 'Заявки' },

@@ -4,7 +4,7 @@ import { useProductModal } from './hooks/use-product-modal'
 import './tables.css'
 
 function ProductModal({ initial, onClose, onSaved }) {
-  const { form, setForm, setFile, saving, errors, isEdit, save } = useProductModal(initial, onSaved)
+  const { form, setForm, categories, setFile, saving, errors, isEdit, save } = useProductModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -27,16 +27,16 @@ function ProductModal({ initial, onClose, onSaved }) {
           {errors.price && <span className="field-error">{errors.price}</span>}
 
           <label>Категория</label>
-          <input className={errors.category ? 'input-error' : ''} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
-          {errors.category && <span className="field-error">{errors.category}</span>}
+          <select className={errors.categoryId ? 'input-error' : ''} value={form.categoryId} onChange={e => setForm({ ...form, categoryId: e.target.value })}>
+            <option value="">Выберите категорию</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          {errors.categoryId && <span className="field-error">{errors.categoryId}</span>}
 
-          {isEdit && (
-            <>
-              <label>Фото</label>
-              <input type="file" accept="image/*" style={{ marginBottom: '1rem' }}
-                onChange={e => setFile(e.target.files[0] ?? null)} />
-            </>
-          )}
+          <label>Фото</label>
+          <input type="file" accept="image/*" style={{ marginBottom: '1rem' }}
+            onChange={e => setFile(e.target.files[0] ?? null)} />
+
           <div className="modal-footer">
             <button type="button" className="btn btn-outline" onClick={onClose}>Отмена</button>
             <button type="submit" className="btn btn-primary" disabled={saving}>
@@ -97,7 +97,7 @@ export default function ProductsTable() {
                 </td>
                 <td>{p.name}</td>
                 <td>{p.price != null ? Number(p.price).toLocaleString() + ' ₽' : '—'}</td>
-                <td>{p.category ?? '—'}</td>
+                <td>{p.category?.name ?? '—'}</td>
                 <td>
                   <div className="actions">
                     <button className="btn btn-outline icon-btn" onClick={() => setModal(p)}><Pencil size={15} /></button>

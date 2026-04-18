@@ -1,11 +1,13 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Header from './shared/components/header.jsx'
+import RequireAuth from './shared/components/require-auth.jsx'
 import HomePage from './features/home/home-page.jsx'
 import ServicesPage from './features/services/services-page.jsx'
 import CatalogPage from './features/catalog/catalog-page.jsx'
 import ProductDetailPage from './features/product/product-detail-page.jsx'
 import LoginPage from './features/admin/login-page.jsx'
 import DashboardPage from './features/admin/dashboard-page.jsx'
+import CategoriesTable from './features/admin/categories-table.jsx'
 import ProductsTable from './features/admin/products-table.jsx'
 import ServicesTable from './features/admin/services-table.jsx'
 import RequestsTable from './features/admin/requests-table.jsx'
@@ -22,10 +24,14 @@ export default function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/catalog/:id" element={<ProductDetailPage />} />
           <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin" element={<DashboardPage />}>
-            <Route path="products" element={<ProductsTable />} />
-            <Route path="services" element={<ServicesTable />} />
-            <Route path="requests" element={<RequestsTable />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/admin" element={<DashboardPage />}>
+              <Route index element={<Navigate to="categories" replace />} />
+              <Route path="categories" element={<CategoriesTable />} />
+              <Route path="products" element={<ProductsTable />} />
+              <Route path="services" element={<ServicesTable />} />
+              <Route path="requests" element={<RequestsTable />} />
+            </Route>
           </Route>
         </Routes>
       </main>

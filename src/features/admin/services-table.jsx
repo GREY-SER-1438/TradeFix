@@ -4,7 +4,7 @@ import { useServiceModal } from './hooks/use-service-modal'
 import './tables.css'
 
 function ServiceModal({ initial, onClose, onSaved }) {
-  const { form, setForm, saving, errors, isEdit, save } = useServiceModal(initial, onSaved)
+  const { form, setForm, categories, saving, errors, isEdit, save } = useServiceModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -23,8 +23,11 @@ function ServiceModal({ initial, onClose, onSaved }) {
           {errors.description && <span className="field-error">{errors.description}</span>}
 
           <label>Категория</label>
-          <input className={errors.category ? 'input-error' : ''} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
-          {errors.category && <span className="field-error">{errors.category}</span>}
+          <select className={errors.categoryId ? 'input-error' : ''} value={form.categoryId} onChange={e => setForm({ ...form, categoryId: e.target.value })}>
+            <option value="">Выберите категорию</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          {errors.categoryId && <span className="field-error">{errors.categoryId}</span>}
 
           <label>Цена, ₽</label>
           <input type="number" min="0" className={errors.price ? 'input-error' : ''} value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
@@ -81,7 +84,7 @@ export default function ServicesTable() {
               <tr key={s.id}>
                 <td>{s.id}</td>
                 <td>{s.name}</td>
-                <td>{s.category}</td>
+                <td>{s.category?.name ?? '—'}</td>
                 <td>{Number(s.price).toLocaleString()} ₽</td>
                 <td>
                   <div className="actions">

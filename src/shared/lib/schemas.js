@@ -9,13 +9,13 @@ export const productSchema = z.object({
   name: z.string().min(2, 'Минимум 2 символа'),
   description: z.string().min(5, 'Минимум 5 символов'),
   price: z.coerce.number({ invalid_type_error: 'Введите число' }).positive('Должна быть больше 0'),
-  category: z.string().min(1, 'Укажите категорию'),
+  categoryId: z.coerce.number({ invalid_type_error: 'Укажите категорию' }).positive('Укажите категорию'),
 })
 
 export const serviceSchema = z.object({
   name: z.string().min(2, 'Минимум 2 символа'),
   description: z.string().min(5, 'Минимум 5 символов'),
-  category: z.string().min(1, 'Укажите категорию'),
+  categoryId: z.coerce.number({ invalid_type_error: 'Укажите категорию' }).positive('Укажите категорию'),
   price: z.coerce.number({ invalid_type_error: 'Введите число' }).positive('Должна быть больше 0'),
 })
 
