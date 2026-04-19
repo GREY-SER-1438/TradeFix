@@ -16,6 +16,7 @@ export function useProductModal(initial, onSaved) {
   const [file, setFile] = useState(null)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
+  const [serverError, setServerError] = useState('')
 
   const isEdit = Boolean(initial)
 
@@ -35,6 +36,7 @@ export function useProductModal(initial, onSaved) {
       return
     }
     setErrors({})
+    setServerError('')
     setSaving(true)
     try {
       let product
@@ -53,6 +55,10 @@ export function useProductModal(initial, onSaved) {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
           body: fd,
         })
+        if (!res.ok) {
+          setServerError('Не удалось сохранить товар. Проверьте данные и попробуйте снова.')
+          return
+        }
         product = await res.json()
       } else {
         const body = {
@@ -71,5 +77,5 @@ export function useProductModal(initial, onSaved) {
     }
   }
 
-  return { form, setForm, categories, file, setFile, saving, errors, isEdit, save }
+  return { form, setForm, categories, file, setFile, saving, errors, serverError, isEdit, save }
 }

@@ -20,7 +20,7 @@ export default function ProductDetailPage() {
           alt={product.name}
         />
         <div className="detail-info">
-          <span className="badge">{product.category}</span>
+          <span className="badge">{product.category?.name ?? ''}</span>
           <h1>{product.name}</h1>
           <span className="price">{Number(product.price).toLocaleString()} ₽</span>
           <hr className="detail-divider" />

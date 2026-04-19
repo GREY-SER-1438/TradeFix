@@ -35,7 +35,32 @@ export default function App() {
           </Route>
         </Routes>
       </main>
-      <footer className="footer">© 2026 Ремонт и продажа торгового оборудования</footer>
+      <footer className="footer">
+        <div className="footer-inner">
+          <div className="footer-col">
+            <span className="footer-brand">TradeFix</span>
+            <p>Ремонт и продажа торгового оборудования. Работаем с 2015 года.</p>
+          </div>
+          <div className="footer-col">
+            <span className="footer-heading">Навигация</span>
+            <ul>
+              <li><a href="/">Главная</a></li>
+              <li><a href="/catalog">Каталог</a></li>
+              <li><a href="/services">Услуги</a></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <span className="footer-heading">Контакты</span>
+            <ul>
+              <li>+7 (495) 123-45-67</li>
+              <li>info@tradefix.ru</li>
+              <li>г. Москва, ул. Ленина, 42</li>
+              <li>Пн–Пт: 9:00 – 18:00</li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">© 2026 TradeFix. Все права защищены.</div>
+      </footer>
     </div>
   )
 }

@@ -23,6 +23,7 @@
 .col-status  { width: 140px; }
 .col-date    { width: 110px; }
 .col-actions { width: 90px; }
+.col-fill { width: auto; }
 
 .admin-table thead tr { border-bottom: 1px solid var(--border); }
 
@@ -56,7 +57,7 @@
   font-size: 0.875rem;
 }
 
-.admin-table img { border-radius: 4px; display: block; }
+.admin-table img { border-radius: 4px; display: block; width: 48px; height: 48px; object-fit: cover; }
 
 .admin-table td:has(.actions) { overflow: visible; white-space: normal; }
 .admin-table td:nth-child(3) { white-space: normal; }
@@ -144,4 +145,15 @@
   font-weight: 500;
   margin-bottom: 0.3rem;
   color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .modal-box { max-width: 100%; margin: 0 1rem; }
+  .col-id { width: 36px; }
+  .col-img { width: 50px; }
+  .col-price { width: 90px; }
+  .col-cat { width: 100px; }
+  .col-actions { width: 72px; }
+  .admin-table th, .admin-table td { padding: 0.5rem 0.4rem; font-size: 0.8rem; }
+  .table-header { flex-wrap: wrap; gap: 0.5rem; }
 }

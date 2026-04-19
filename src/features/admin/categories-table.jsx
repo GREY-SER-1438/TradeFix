@@ -69,20 +69,20 @@ export default function CategoriesTable() {
         <table className="admin-table">
           <colgroup>
             <col className="col-id" />
-            <col className="col-name" />
+            <col className="col-fill" />
             <col className="col-actions" />
           </colgroup>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>№</th>
               <th>Название</th>
               <th>Действия</th>
             </tr>
           </thead>
           <tbody>
-            {visible.map(c => (
+            {visible.map((c, idx) => (
               <tr key={c.id}>
-                <td>{c.id}</td>
+                <td>{idx + 1}</td>
                 <td>{c.name}</td>
                 <td>
                   <div className="actions">

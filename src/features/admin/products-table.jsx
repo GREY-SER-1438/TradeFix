@@ -4,7 +4,7 @@ import { useProductModal } from './hooks/use-product-modal'
 import './tables.css'
 
 function ProductModal({ initial, onClose, onSaved }) {
-  const { form, setForm, categories, setFile, saving, errors, isEdit, save } = useProductModal(initial, onSaved)
+  const { form, setForm, categories, setFile, saving, errors, serverError, isEdit, save } = useProductModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -14,6 +14,7 @@ function ProductModal({ initial, onClose, onSaved }) {
           <button className="btn-icon" onClick={onClose}><X size={18} /></button>
         </div>
         <form onSubmit={save}>
+          {serverError && <div className="msg error" style={{ gridColumn: '1/-1', marginBottom: '0.75rem' }}>{serverError}</div>}
           <label>Название</label>
           <input className={errors.name ? 'input-error' : ''} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
           {errors.name && <span className="field-error">{errors.name}</span>}

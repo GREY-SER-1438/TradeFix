@@ -15,8 +15,9 @@
 .request-form textarea { margin-bottom: 0; }
 
 .request-form textarea { grid-column: span 2; resize: none; }
+.request-form select { grid-column: span 2; }
 
-.request-form .btn { align-self: end; }
+.request-form .btn { align-self: stretch; width: 100%; grid-column: span 2; }
 
 .request-form .field-error { grid-column: span 1; }
 
