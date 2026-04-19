@@ -66,7 +66,7 @@ export default function CategoriesTable() {
       </div>
 
       <div className="table-wrap">
-        <table className="admin-table">
+        <table className="admin-table categories-table">
           <colgroup>
             <col className="col-id" />
             <col className="col-fill" />
@@ -92,7 +92,14 @@ export default function CategoriesTable() {
               </tr>
             ))}
             {visible.length === 0 && (
-              <tr><td colSpan={3} style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '1.5rem' }}>Нет категорий</td></tr>
+              <tr>
+                <td colSpan={3} className="table-empty">
+                  <div className="table-empty-inner">
+                    <div className="table-empty-title">Категорий пока нет</div>
+                    <div className="table-empty-hint">Нажмите «+ Добавить», чтобы создать первую категорию</div>
+                  </div>
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

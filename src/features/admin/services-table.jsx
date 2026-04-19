@@ -62,7 +62,7 @@ export default function ServicesTable() {
         <button className="btn btn-primary" onClick={() => setModal('create')}>+ Добавить</button>
       </div>
       <div className="table-wrap">
-        <table className="admin-table">
+        <table className="admin-table services-table">
           <colgroup>
             <col className="col-id" />
             <col className="col-name" />
@@ -94,6 +94,16 @@ export default function ServicesTable() {
                 </td>
               </tr>
             ))}
+            {services.length === 0 && (
+              <tr>
+                <td colSpan={5} className="table-empty">
+                  <div className="table-empty-inner">
+                    <div className="table-empty-title">Услуги пока не добавлены</div>
+                    <div className="table-empty-hint">Нажмите «+ Добавить», чтобы создать первую услугу</div>
+                  </div>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

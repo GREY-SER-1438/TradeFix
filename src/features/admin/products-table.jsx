@@ -68,7 +68,7 @@ export default function ProductsTable() {
         <button className="btn btn-primary" onClick={() => setModal('create')}>+ Добавить</button>
       </div>
       <div className="table-wrap">
-        <table className="admin-table">
+        <table className="admin-table products-table">
           <colgroup>
             <col className="col-id" />
             <col className="col-img" />
@@ -108,6 +108,16 @@ export default function ProductsTable() {
                 </td>
               </tr>
             ))}
+            {products.length === 0 && (
+              <tr>
+                <td colSpan={6} className="table-empty">
+                  <div className="table-empty-inner">
+                    <div className="table-empty-title">Товары пока не добавлены</div>
+                    <div className="table-empty-hint">Нажмите «+ Добавить», чтобы создать первый товар</div>
+                  </div>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
