@@ -17,6 +17,7 @@ export function useProductModal(initial, onSaved) {
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
+  const [fileError, setFileError] = useState('')
 
   const isEdit = Boolean(initial)
 
@@ -77,5 +78,22 @@ export function useProductModal(initial, onSaved) {
     }
   }
 
-  return { form, setForm, categories, file, setFile, saving, errors, serverError, isEdit, save }
+  const pickFile = (f) => {
+    setFileError('')
+    if (!f) { setFile(null); return }
+    const img = new Image()
+    const url = URL.createObjectURL(f)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      if (img.width !== img.height) {
+        setFileError('Фото должно быть квадратным (соотношение сторон 1:1)')
+        setFile(null)
+      } else {
+        setFile(f)
+      }
+    }
+    img.src = url
+  }
+
+  return { form, setForm, categories, file, setFile: pickFile, saving, errors, serverError, fileError, isEdit, save }
 }

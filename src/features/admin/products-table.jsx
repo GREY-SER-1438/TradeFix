@@ -4,7 +4,7 @@ import { useProductModal } from './hooks/use-product-modal'
 import './tables.css'
 
 function ProductModal({ initial, onClose, onSaved }) {
-  const { form, setForm, categories, setFile, saving, errors, serverError, isEdit, save } = useProductModal(initial, onSaved)
+  const { form, setForm, categories, setFile, saving, errors, serverError, fileError, isEdit, save } = useProductModal(initial, onSaved)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -34,9 +34,10 @@ function ProductModal({ initial, onClose, onSaved }) {
           </select>
           {errors.categoryId && <span className="field-error">{errors.categoryId}</span>}
 
-          <label>Фото</label>
-          <input type="file" accept="image/*" style={{ marginBottom: '1rem' }}
+          <label>Фото <span style={{ fontWeight: 400, color: 'var(--text-muted)', fontSize: '0.78rem' }}>(только 1:1)</span></label>
+          <input type="file" accept="image/*" style={{ marginBottom: '0.25rem' }}
             onChange={e => setFile(e.target.files[0] ?? null)} />
+          {fileError && <span className="field-error" style={{ marginBottom: '0.75rem' }}>{fileError}</span>}
 
           <div className="modal-footer">
             <button type="button" className="btn btn-outline" onClick={onClose}>Отмена</button>
